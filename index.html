@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Monitoramento de OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .summary-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .summary-card:hover {
+            transform: translateY(-5px);
+        }
+        .status-pill {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            color: white;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">Painel de Monitoramento de Ordens de Serviço</h1>
+
+        <!-- Seção de Resumo -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="summary-card text-center">
+                <p class="text-gray-500 font-semibold">Total de OS Abertas</p>
+                <p id="abertas-count" class="text-5xl font-bold text-red-500 my-2">0</p>
+            </div>
+            <div class="summary-card text-center">
+                <p class="text-gray-500 font-semibold">Total de OS Pendentes</p>
+                <p id="pendentes-count" class="text-5xl font-bold text-yellow-500 my-2">0</p>
+            </div>
+            <div class="summary-card text-center">
+                <p class="text-gray-500 font-semibold">Total de OS Fechadas</p>
+                <p id="fechadas-count" class="text-5xl font-bold text-green-500 my-2">0</p>
+            </div>
+        </div>
+        
+        <!-- Seção de Filtros -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Filtros</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label for="data-inicial" class="block text-sm font-medium text-gray-700">Data Inicial</label>
+                    <input type="date" id="data-inicial" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="data-final" class="block text-sm font-medium text-gray-700">Data Final</label>
+                    <input type="date" id="data-final" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="situacao-filtro" class="block text-sm font-medium text-gray-700">Situação</label>
+                    <select id="situacao-filtro" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <option value="Todos">Todos</option>
+                        <option value="Aberta">Aberta</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Fechada">Fechada</option>
+                    </select>
+                </div>
+                <button onclick="applyFilters()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors">
+                    Aplicar Filtros
+                </button>
+            </div>
+        </div>
+
+        <!-- Seção de Detalhes -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Detalhes das Ordens de Serviço</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Data de Abertura
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Nº OS
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Situação
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Prioridade
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Setor
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Equipamento
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="os-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Os dados serão injetados aqui via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="script.js" defer></script>
+
+</body>
+</html>
